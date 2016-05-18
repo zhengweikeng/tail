@@ -1,0 +1,22 @@
+{
+  "name": "tail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tail.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhengweikeng/tail.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhengweikeng/tail/issues"
+  },
+  "homepage": "https://github.com/zhengweikeng/tail#readme",
+  "dependencies": {
+    "iconv-lite": "^0.4.13"
+  }
+}
