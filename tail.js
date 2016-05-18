@@ -14,16 +14,17 @@ class Tail extends EventEmitter {
     this.separator = options.separator || /[\r]{0,1}\n/
     this.fsWatchOptions = options.fsWatchOptions || {}
     this.fromStart = options.fromStart || false
+    this.fromLine = options.fromLine || 0
     
     if (env === 'development') {
       console.log('let go to tail...')
       console.log(`filename: ${filename}`)
     }
     
-    // this.buffer = ''
     this.internalDispatcher = new EventEmitter()
     this.queue = []
     this.isWatching = false
+    this.buffer = ''
     
     this.internalDispatcher.on('message', () => this.readDatas())
     
@@ -32,12 +33,9 @@ class Tail extends EventEmitter {
   
   readDatas() {
     if (this.queue.length >= 1) {
-      // const {start, end} = queue.shift()
       const block = this.queue.shift()
       const start = block.start
       const end = block.end
-      console.log(`start: ${start}`)
-      console.log(`end: ${end}`)
       if (end > start) {
         const chunks = []
         let size = 0
@@ -61,6 +59,10 @@ class Tail extends EventEmitter {
           
           const datas = data.split(this.separator)
           // this.buffer = datas.pop()
+          
+          if (start === 0 && this.fromLine > 0) {
+            datas.splice(0, this.fromLine - 1)
+          }
           datas.forEach((lineData) => this.emit('line', lineData))
           
           if (this.queue.length >= 1) {
