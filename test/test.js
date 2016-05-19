@@ -1,5 +1,5 @@
 const Tail = require('../tail')
-const tail = new Tail('./test.log', {fromStart: true, fromLine: 2})
+const tail = new Tail('./test.log', {n: 2})
 
 tail.on('line', (data) => {
   console.log(data)

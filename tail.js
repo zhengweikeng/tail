@@ -14,7 +14,7 @@ class Tail extends EventEmitter {
     this.separator = options.separator || /[\r]{0,1}\n/
     this.fsWatchOptions = options.fsWatchOptions || {}
     this.fromStart = options.fromStart || false
-    this.fromLine = options.fromLine || 0
+    this.n = options.n || 0
     
     if (env === 'development') {
       console.log('let go to tail...')
@@ -58,8 +58,9 @@ class Tail extends EventEmitter {
           
           const datas = data.split(this.separator)
           
-          if (start === 0 && this.fromLine > 0) {
-            datas.splice(0, this.fromLine - 1)
+          if (start === 0 && this.n > 0) {
+            const fromLine = datas.length - this.n
+            datas.splice(0, fromLine)
           }
           
           datas.forEach((lineData) => this.emit('line', lineData))
@@ -78,7 +79,7 @@ class Tail extends EventEmitter {
     this.isWatching = true
     const stats = fs.statSync(this.filename)
     this.pos = stats.size
-    if (this.fromStart) {
+    if (this.fromStart || this.n > 0) {
       this.pos = 0
     }
     

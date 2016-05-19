@@ -1,7 +1,7 @@
 {
   "name": "tail",
   "version": "1.0.0",
-  "description": "",
+  "description": "tail file",
   "main": "tail.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/zhengweikeng/tail.git"
   },
-  "author": "",
+  "author": "zhengweikeng",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zhengweikeng/tail/issues"
