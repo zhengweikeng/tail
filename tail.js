@@ -24,7 +24,6 @@ class Tail extends EventEmitter {
     this.internalDispatcher = new EventEmitter()
     this.queue = []
     this.isWatching = false
-    this.buffer = ''
     
     this.internalDispatcher.on('message', () => this.readDatas())
     
@@ -58,11 +57,11 @@ class Tail extends EventEmitter {
           const data = iconv.decode(buffer, 'utf8')
           
           const datas = data.split(this.separator)
-          // this.buffer = datas.pop()
           
           if (start === 0 && this.fromLine > 0) {
             datas.splice(0, this.fromLine - 1)
           }
+          
           datas.forEach((lineData) => this.emit('line', lineData))
           
           if (this.queue.length >= 1) {
@@ -97,9 +96,9 @@ class Tail extends EventEmitter {
     if (e === 'change') {
       const stats = fs.statSync(this.filename)
       if (stats.size < this.pos) this.pos = stats.size
-      
       if (stats.size > this.pos) {
-        this.queue.push({start: this.pos, end: stats.size})
+        const pos = this.pos > 0 ? this.pos + 1 : this.pos
+        this.queue.push({start: pos, end: stats.size})
         this.pos = stats.size
         if (this.queue.length === 1) {
           this.internalDispatcher.emit('message')
