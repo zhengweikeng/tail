@@ -60,6 +60,10 @@ class Tail extends EventEmitter {
           datas = datas.filter((str) => str)
           
           if (start === 0 && this.n > 0) {
+            if (this.n > datas.length) {
+              // show last 10 line
+              this.n = 10
+            }
             const fromLine = datas.length - this.n
             datas.splice(0, fromLine)
           }
