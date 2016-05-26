@@ -57,6 +57,7 @@ class Tail extends EventEmitter {
           const data = iconv.decode(buffer, 'utf8')
           
           const datas = data.split(this.separator)
+          datas = datas.filter((str) => str)
           
           if (start === 0 && this.n > 0) {
             const fromLine = datas.length - this.n
@@ -98,8 +99,7 @@ class Tail extends EventEmitter {
       const stats = fs.statSync(this.filename)
       if (stats.size < this.pos) this.pos = stats.size
       if (stats.size > this.pos) {
-        const pos = this.pos > 0 ? this.pos + 1 : this.pos
-        this.queue.push({start: pos, end: stats.size})
+        this.queue.push({start: this.pos, end: stats.size})
         this.pos = stats.size
         if (this.queue.length === 1) {
           this.internalDispatcher.emit('message')
